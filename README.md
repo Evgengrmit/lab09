@@ -58,14 +58,6 @@ $ git config -e --global
 $ git remote add origin https://github.com/${GITHUB_USERNAME}/lab02.git
 # Объединение изменений, присутствующих в удаленном репозитории, в локальный рабочий каталог
 $ git pull origin master
-remote: Enumerating objects: 6, done.
-remote: Counting objects: 100% (6/6), done.
-remote: Compressing objects: 100% (4/4), done.
-remote: Total 6 (delta 0), reused 3 (delta 0), pack-reused 0
-Unpacking objects: 100% (6/6), done.
-From https://github.com/Evgengrmit/lab02
- * branch            master     -> FETCH_HEAD
- * [new branch]      master     -> origin/master
  # Создание пустого файла README.md
 $ touch README.md
 # Cписок изменений в каталоге
@@ -91,35 +83,8 @@ $ git push origin master
 ```sh
 # Объединение изменений, присутствующих в удаленном репозитории, в локальный рабочий каталог
 $ git pull origin master
-remote: Enumerating objects: 4, done.
-remote: Counting objects: 100% (4/4), done.
-remote: Compressing objects: 100% (2/2), done.
-remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
-Unpacking objects: 100% (3/3), done.
-From https://github.com/Evgengrmit/lab02
- * branch            master     -> FETCH_HEAD
-   be4941d..3ff8bc4  master     -> origin/master
-Updating be4941d..3ff8bc4
-Fast-forward
- .gitignore | 4 ++++
- 1 file changed, 4 insertions(+)
- create mode 100644 .gitignore
 # Cписок коммитов
 $ git log
-commit 3ff8bc4b93b52e26176a1ea0a9a63314c621290d (HEAD -> master, origin/master)
-Author: Evgengrmit <54779142+Evgengrmit@users.noreply.github.com>
-Date:   Mon Mar 30 13:15:55 2020 +0300
-    Create .gitignore
-
-commit be4941d64750919141ddf9fab0c557d1b61dc8ad
-Author: Evgengrmit <evgengrmit@gmail.com>
-Date:   Sun Mar 29 23:46:20 2020 +0300
-    added README.md
-
-commit 79ab77866bcbbab0a382dd00fc8cfb70808febe5
-Author: Evgengrmit <54779142+Evgengrmit@users.noreply.github.com>
-Date:   Sun Mar 29 22:39:53 2020 +0300
-    Initial commit
 ```
 Работа в локальном репозитории - написание программы на C++
 ```sh
@@ -183,6 +148,7 @@ $ edit README.md
 Публикация новых файлов на удаленном сервере
 ```sh
 $ git status
+# Подвести все файлы в каталоге под версионный контроль
 $ git add .
 $ git commit -m"added sources"
 $ git push origin master
