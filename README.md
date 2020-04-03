@@ -83,9 +83,8 @@ cmake_minimum_required(VERSION 3.4)
 project(print)
 EOF
 ```
-
+Устанавливаем стандарт языка и делаем его обязательным
 ```sh
-# Устанавливаем стандарт языка и включаем его
 $ cat >> CMakeLists.txt <<EOF
 
 set(CMAKE_CXX_STANDARD 20)
