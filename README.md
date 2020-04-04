@@ -40,7 +40,7 @@ $ git remote add origin https://github.com/${GITHUB_USERNAME}/lab03.git
 # где искать заголовочные файлы
 $ g++ -std=c++2a -I./include -c sources/print.cpp
 $ ls print. # Проверка существования объектного файла
-# Вывод информации о бинарном файле, где есть строка print
+# Печать таблицы имен объектного файла, содержащих в тексте комбинацию print
 $ nm print.o | grep print
 # Создаем из объектного файла файл статической библиотеки
 $ ar rvs print.a print.o
@@ -91,14 +91,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 EOF
 ```
-Создание статической библиотеки с именем print
+Сборка статической библиотеки с именем _print_ и исходником `print.cpp`
 ```sh
 $ cat >> CMakeLists.txt <<EOF
 
 add_library(print STATIC \${CMAKE_CURRENT_SOURCE_DIR}/sources/print.cpp)
 EOF
 ```
-Указание, где искать заголовочные файлы
+Добавление директори с хэдерами и указание, где искать заголовочные файлы
 ```sh
 $ cat >> CMakeLists.txt <<EOF
 
@@ -110,7 +110,7 @@ EOF
 $ cmake -H. -B_build
 $ cmake --build _build
 ```
-Добавление исполняемых файлов
+Добавление исполняемых файлов в соответствующие исходные проекты
 ```sh
 $ cat >> CMakeLists.txt <<EOF
 
@@ -126,37 +126,38 @@ target_link_libraries(example1 print)
 target_link_libraries(example2 print)
 EOF
 ```
-Компиляция и сборка проекта с помощью CMake
+Компиляция и сборка проекта с помощью CMake в директории `_build`
 ```sh
 $ cmake --build _build # Сборка всего проекта
 $ cmake --build _build --target print # Сборка только статической библиотеки
 $ cmake --build _build --target example1 # Сборка example1
 $ cmake --build _build --target example2 # Сборка example2
 ```
-Проверка работы CMake
+Запуск исполняемых файлов example1 и example2
 ```sh
-$ ls -la _build/libprint.a
-$ _build/example1 && echo
+$ ls -la _build/libprint.a # Проверка существования файла libprint.a и вывод информации о нём
+$ _build/example1 && echo # Запуск example1 и вывод результата работы на экран
 hello
-$ _build/example2
-$ cat log.txt && echo
+$ _build/example2 # Запуск исполяемого файла (вывод сообщения в файл log.txt)
+$ cat log.txt && echo # Отображение результата работы 
 hello
 $ rm -rf log.txt
 ```
-Получаем CMakeLists.txt из удаленного репозирия с ЛР № 3
+Работа с файлом CMakeLists.txt из удаленного репозитория
 ```sh
-$ git clone https://github.com/tp-labs/lab03 tmp
-$ mv -f tmp/CMakeLists.txt .
-$ rm -rf tmp
+$ git clone https://github.com/tp-labs/lab03 tmp # Клонирование удаленного репозитория в директорию
+$ mv -f tmp/CMakeLists.txt . # Перемещение файла CMakeLists.txt в текущий каталог
+$ rm -rf tmp # Удаление каталога tmp
 ```
 Компилируем статическую библиотеку в подкаталог `_install`
 ```sh
-$ cat CMakeLists.txt
-$ cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
-$ cmake --build _build --target install
-$ tree _install
+$ cat CMakeLists.txt # Просмотр содержимого файла CMakeLists.txt
+# Создание директории с исполняемым файлом cmake и указание каталога установки.
+$ cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install # Сборка файла _build в директорию install
+$ cmake --build _build --target install # Сборка файла _build в директорию install
+$ tree _install # Вывод содержимого каталога _install в виде дерева
 ```
-
+Запись изменений в репозиторий
 ```sh
 $ git add CMakeLists.txt
 $ git commit -m"added CMakeLists.txt"
