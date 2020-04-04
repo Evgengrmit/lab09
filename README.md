@@ -143,7 +143,7 @@ $ cat log.txt && echo
 hello
 $ rm -rf log.txt
 ```
-Получаем CMaakeLists.txt из удаленного репозирия с ЛР № 3
+Получаем CMakeLists.txt из удаленного репозирия с ЛР № 3
 ```sh
 $ git clone https://github.com/tp-labs/lab03 tmp
 $ mv -f tmp/CMakeLists.txt .
