@@ -126,7 +126,7 @@ target_link_libraries(example1 print)
 target_link_libraries(example2 print)
 EOF
 ```
-Компиляция и сборка проекта с помощью CMake в директории `_build`
+Сборка проекта с помощью CMake в директории `_build`
 ```sh
 $ cmake --build _build # Сборка всего проекта
 $ cmake --build _build --target print # Сборка только статической библиотеки
