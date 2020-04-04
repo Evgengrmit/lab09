@@ -110,7 +110,7 @@ EOF
 $ cmake -H. -B_build
 $ cmake --build _build
 ```
-Создание исполняемых файлов
+Добавление исполняемых файлов
 ```sh
 $ cat >> CMakeLists.txt <<EOF
 
@@ -128,10 +128,10 @@ EOF
 ```
 Компиляция и сборка проекта с помощью CMake
 ```sh
-$ cmake --build _build
-$ cmake --build _build --target print
-$ cmake --build _build --target example1
-$ cmake --build _build --target example2
+$ cmake --build _build # Сборка всего проекта
+$ cmake --build _build --target print # Сборка только статической библиотеки
+$ cmake --build _build --target example1 # Сборка example1
+$ cmake --build _build --target example2 # Сборка example2
 ```
 Проверка работы CMake
 ```sh
@@ -143,13 +143,13 @@ $ cat log.txt && echo
 hello
 $ rm -rf log.txt
 ```
-
+Получаем CMaakeLists.txt из удаленного репозирия с ЛР № 3
 ```sh
 $ git clone https://github.com/tp-labs/lab03 tmp
 $ mv -f tmp/CMakeLists.txt .
 $ rm -rf tmp
 ```
-
+Компилируем статическую библиотеку в подкаталог `_install`
 ```sh
 $ cat CMakeLists.txt
 $ cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
