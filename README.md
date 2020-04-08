@@ -104,7 +104,7 @@ Hooray, .travis.yml looks valid :)
 $ ex -sc '1i|[![Build Status](https://travis-ci.com/Evgengrmit/lab04.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab04)' -cx README.md
 $ ex -sc '2i|[![Build Status](https://travis-ci.org/Evgengrmit/lab04.svg?branch=master)](https://travis-ci.org/Evgengrmit/lab04)' -cx README.md
 ```
-Запись изменений в репозиторий
+Запись изменений в удаленный репозиторий
 ```sh
 $ git add .travis.yml
 $ git add README.md
@@ -125,7 +125,7 @@ $ travis show # Отображает общую информацию о посл
 ```
 
 ## Report
-Создание отчета по ЛР № 3
+Создание отчета по ЛР № 4
 ```sh
 $ popd
 $ export LAB_NUMBER=04
