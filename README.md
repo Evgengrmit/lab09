@@ -1,29 +1,28 @@
-[![Build Status](https://travis-ci.com/Evgengrmit/lab04.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab04)
-[![Build Status](https://travis-ci.org/Evgengrmit/lab04.svg?branch=master)](https://travis-ci.org/Evgengrmit/lab04)
-## Laboratory work IV
+## Laboratory work V
 
-Данная лабораторная работа посвещена изучению систем непрерывной интеграции на примере сервиса **Travis CI**
+<a href="https://yandex.ru/efir/?stream_id=vQw_LH0UfN6I"><img src="https://raw.githubusercontent.com/tp-labs/lab05/master/preview.png" width="640"/></a>
+
+Данная лабораторная работа посвещена изучению фреймворков для тестирования на примере **GTest**
 
 ```sh
-$ open https://travis-ci.org
+$ open https://github.com/google/googletest
 ```
 
 ## Tasks
 
-- [x] 1. Авторизоваться на сервисе **Travis CI** с использованием **GitHub** аккаунта
-- [x] 2. Создать публичный репозиторий с названием **lab04** на сервисе **GitHub**
-- [x] 3. Ознакомиться со ссылками учебного материала
-- [x] 4. Включить интеграцию сервиса **Travis CI** с созданным репозиторием
-- [x] 5. Получить токен для **Travis CLI** с правами **repo** и **user**
-- [x] 6. Получить фрагмент вставки значка сервиса **Travis CI** в формате **Markdown**
-- [x] 7. Выполнить инструкцию учебного материала
+- [ ] 1. Создать публичный репозиторий с названием **lab05** на сервисе **GitHub**
+- [ ] 2. Выполнить инструкцию учебного материала
+- [ ] 3. Ознакомиться со ссылками учебного материала
+- [ ] 4. Составить отчет и отправить ссылку личным сообщением в **Slack**
 
 ## Tutorial
 Создание переменных среды и установка их значений
 ```sh
 $ export GITHUB_USERNAME=Evgengrmit
-$ export GITHUB_TOKEN=*************************
+# Связывание  команды gsed c вызовом команды sed
+$ alias gsed=sed # for *-nix system
 ```
+
 Начало работы в каталоге workspace
 ```sh
 # Переход в  рабочую директорию
@@ -32,102 +31,118 @@ $ pushd . # Сохранение текущего каталога в стек
 # Активация Node.js
 $ source scripts/activate
 ```
-Установка пакетного менеджера rvm (Программа для управления версиями Ruby) и пакета travis.
+Настройка git-репозитория **lab05** для работы
 ```sh
-$ \curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles # установка программы RVM
-Turning on ignore dotfiles mode.
-
-Downloading https://github.com/rvm/rvm/archive/master.tar.gz
-Installing RVM to /Users/evgengrmit/.rvm/
-# Добавляем в скрипт activate, команду который добавляет каталог.rvm/scripts/rvm к переменной среды PATH
-$ echo "source $HOME/.rvm/scripts/rvm" >> scripts/activate
-# Повторяем скрипт для активации rvm
-$ . scripts/activate
-$ rvm autolibs disable # запрет установки сопутствующих библиотек
-$ brew install ruby # установка интерпретатора языка Ruby
-$ gem install travis # установка travis из пакетного менеджера ruby
-Successfully installed travis-1.8.13
-```
-Настройка git-репозитория **lab04** для работы
-```sh
-$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04
-$ cd projects/lab04
+$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab05
+$ cd projects/lab05
 $ git remote remove origin
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab04
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05
 ```
-Создание файла `.travis.yml`
+Подключение к репозиторию подмодуля **Google Test**, выбор версии с помощью переключения ветки
 ```sh
-# Установка языка программирования
-$ cat > .travis.yml <<EOF
-language: cpp
-EOF
-```
-Установка пользовательского сценария запуска
-```sh
-# Установка настроек СMake, запуск и исполнение
-$ cat >> .travis.yml <<EOF
-
-script:
-- cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
-- cmake --build _build
-- cmake --build _build --target install
-EOF
+$ mkdir third-party
+# Клонирование репозитория Google к своему репозиторию как подмодуль(проект в проекте)
+$ git submodule add https://github.com/google/googletest third-party/gtest
+Cloning into '/Users/evgengrmit/Evgengrmit/workspace/projects/lab05/third-party/gtest'...
+remote: Enumerating objects: 20049, done.
+remote: Total 20049 (delta 0), reused 0 (delta 0), pack-reused 20049
+Receiving objects: 100% (20049/20049), 7.33 MiB | 3.34 MiB/s, done.
+Resolving deltas: 100% (14816/14816), done.
+$ cd third-party/gtest && git checkout release-1.8.1 && cd ../..
+$ git add third-party/gtest
+$ git commit -m"added gtest framework"
 ```
 
 ```sh
-# Итерации конфигурирования источников и пакетов
-# Установка д0полнительных исполняемых файлов и пакетов
-$ cat >> .travis.yml <<EOF
+$ gsed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
+option(BUILD_TESTS "Build tests" OFF)
+' CMakeLists.txt
+$ cat >> CMakeLists.txt <<EOF
 
-addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-    packages:
-      - cmake
-      - cmake-data
+if(BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(third-party/gtest)
+  file(GLOB \${PROJECT_NAME}_TEST_SOURCES tests/*.cpp)
+  add_executable(check \${\${PROJECT_NAME}_TEST_SOURCES})
+  target_link_libraries(check \${PROJECT_NAME} gtest_main)
+  add_test(NAME check COMMAND check)
+endif()
 EOF
 ```
-Логирование по полученому токену для **Travis CI**
+
 ```sh
-$ travis login --github-token ${GITHUB_TOKEN}
-Successfully logged in as Evgengrmit!
+$ mkdir tests
+$ cat > tests/test1.cpp <<EOF
+#include <print.hpp>
+
+#include <gtest/gtest.h>
+
+TEST(Print, InFileStream)
+{
+  std::string filepath = "file.txt";
+  std::string text = "hello";
+  std::ofstream out{filepath};
+
+  print(text, out);
+  out.close();
+
+  std::string result;
+  std::ifstream in{filepath};
+  in >> result;
+
+  EXPECT_EQ(result, text);
+}
+EOF
 ```
-Проверка `.travis.yml` на ошибки
+
+```sh
+$ cmake -H. -B_build -DBUILD_TESTS=ON
+$ cmake --build _build
+$ cmake --build _build --target test
+```
+
+```sh
+$ _build/check
+$ cmake --build _build --target test -- ARGS=--verbose
+```
+
+```sh
+$ gsed -i 's/lab04/lab05/g' README.md
+$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
+$ gsed -i '/cmake --build _build --target install/a\
+- cmake --build _build --target test -- ARGS=--verbose
+' .travis.yml
+```
+
 ```sh
 $ travis lint
-Hooray, .travis.yml looks valid :)
 ```
-Вставка значков с Build Status для `travis-ci.com` и `travis-ci.org`
-```sh
-$ ex -sc '1i|[![Build Status](https://travis-ci.com/Evgengrmit/lab04.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab04)' -cx README.md
-$ ex -sc '2i|[![Build Status](https://travis-ci.org/Evgengrmit/lab04.svg?branch=master)](https://travis-ci.org/Evgengrmit/lab04)' -cx README.md
-```
-Запись изменений в удаленный репозиторий
+
 ```sh
 $ git add .travis.yml
-$ git add README.md
-$ git commit -m"added CI"
+$ git add tests
+$ git add -p
+$ git commit -m"added tests"
 $ git push origin master
 ```
-Команды **travis** в `bash`
+
 ```sh
-$ travis lint # Проверяет.travis.yml на ошибки, предупреждения
-$ travis accounts # Отображает всех учетных записей, для которых можно настроить репозиторий
-$ travis sync # Запускает новую синхронизацию с GitHub
-$ travis repos # Перечисляет репозитории, на которые пользователь имеет определенные разрешения.
-$ travis enable # Активирует проект на TravisCI
-$ travis whatsup # Перечисляет самые последние изменения
-$ travis branches # Показывает последнюю информацию для каждой ветки
-$ travis history # Выводит историю сборки проектов
-$ travis show # Отображает общую информацию о последней сборке
+$ travis login --auto
+$ travis enable
+```
+
+```sh
+$ mkdir artifacts
+$ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
+# for macOS: $ screencapture -T 20 artifacts/screenshot.png
+# open https://github.com/${GITHUB_USERNAME}/lab05
 ```
 
 ## Report
-Создание отчета по ЛР № 4
+
 ```sh
 $ popd
-$ export LAB_NUMBER=04
+$ export LAB_NUMBER=05
 $ git clone https://github.com/tp-labs/lab${LAB_NUMBER} tasks/lab${LAB_NUMBER}
 $ mkdir reports/lab${LAB_NUMBER}
 $ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md
@@ -136,11 +151,21 @@ $ edit REPORT.md
 $ gist REPORT.md
 ```
 
+## Homework
+
+### Задание
+1. Создайте `CMakeList.txt` для библиотеки *banking*.
+2. Создайте модульные тесты на классы `Transaction` и `Account`.
+    * Используйте mock-объекты.
+    * Покрытие кода должно составлять 100%.
+3. Настройте сборочную процедуру на **TravisCI**.
+4. Настройте [Coveralls.io](https://coveralls.io/).
+
 ## Links
 
-- [Travis Client](https://github.com/travis-ci/travis.rb)
-- [AppVeyour](https://www.appveyor.com/)
-- [GitLab CI](https://about.gitlab.com/gitlab-ci/)
+- [C++ CI: Travis, CMake, GTest, Coveralls & Appveyor](http://david-grs.github.io/cpp-clang-travis-cmake-gtest-coveralls-appveyor/)
+- [Boost.Tests](http://www.boost.org/doc/libs/1_63_0/libs/test/doc/html/)
+- [Catch](https://github.com/catchorg/Catch2)
 
 ```
 Copyright (c) 2015-2020 The ISC Authors
