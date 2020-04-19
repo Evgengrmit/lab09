@@ -33,7 +33,7 @@ $ source scripts/activate
 ```
 Настройка git-репозитория **lab05** для работы
 ```sh
-$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab05
+$ git clone https://github.com/${GITHUB_USERNAME}/lab05 projects/lab05
 $ cd projects/lab05
 $ git remote remove origin
 $ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05
@@ -52,11 +52,15 @@ $ cd third-party/gtest && git checkout release-1.8.1 && cd ../..
 $ git add third-party/gtest
 $ git commit -m"added gtest framework"
 ```
-
+Модифицируем CMakeList.txt
 ```sh
-$ gsed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
+# Вставка текста в файл после строки
+# Добавление опции для сборки тестов
+$ gsed -i "" '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
 option(BUILD_TESTS "Build tests" OFF)
 ' CMakeLists.txt
+# Вставка в конец файла
+# Добавление сборки тестов
 $ cat >> CMakeLists.txt <<EOF
 
 if(BUILD_TESTS)
@@ -69,7 +73,7 @@ if(BUILD_TESTS)
 endif()
 EOF
 ```
-
+Создание теста
 ```sh
 $ mkdir tests
 $ cat > tests/test1.cpp <<EOF
@@ -94,28 +98,54 @@ TEST(Print, InFileStream)
 }
 EOF
 ```
-
+Сборка проекта
 ```sh
+# Генерация файлов для сборки с тестом
 $ cmake -H. -B_build -DBUILD_TESTS=ON
+-- The C compiler identification is AppleClang 11.0.3.11030032
+-- The CXX compiler identification is AppleClang 11.0.3.11030032
+...
+-- Build files have been written to: /Users/evgengrmit/Evgengrmit/workspace/projects/lab05/_build
 $ cmake --build _build
+Scanning dependencies of target gtest
+[  8%] Building CXX object third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+...
+[100%] Built target gmock_main
 $ cmake --build _build --target test
-```
+Running tests...
+Test project /Users/evgengrmit/Evgengrmit/workspace/projects/lab05/_build
+    Start 1: check
+1/1 Test #1: check ............................   Passed    0.17 sec
 
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.17 sec
+```
+Запуск тестов
 ```sh
 $ _build/check
-$ cmake --build _build --target test -- ARGS=--verbose
-```
+Running main() from /Users/evgengrmit/Evgengrmit/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+...
+[  PASSED  ] 1 test.
 
+$ cmake --build _build --target test -- ARGS=--verbose
+Running tests...
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+```
+Модифицируем `.travis.yml` и `README.md`
 ```sh
-$ gsed -i 's/lab04/lab05/g' README.md
-$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
-$ gsed -i '/cmake --build _build --target install/a\
+$ gsed -i "" 's/lab05/lab05/g' README.md
+$ gsed -i "" 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
+$ gsed -i "" '/cmake --build _build --target install/a\
 - cmake --build _build --target test -- ARGS=--verbose
 ' .travis.yml
 ```
-
+Проверка `.travis.yml`
 ```sh
 $ travis lint
+Hooray, .travis.yml looks valid :)
 ```
 
 ```sh
