@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Evgengrmit/lab05.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab05)
+[![Build Status](https://travis-ci.org/Evgengrmit/lab05.svg?branch=master)](https://travis-ci.org/Evgengrmit/lab05)
 ## Laboratory work V
 
 <a href="https://yandex.ru/efir/?stream_id=vQw_LH0UfN6I"><img src="https://raw.githubusercontent.com/tp-labs/lab05/master/preview.png" width="640"/></a>
@@ -147,11 +149,11 @@ $ gsed -i "" '/cmake --build _build --target install/a\
 $ travis lint
 Hooray, .travis.yml looks valid :)
 ```
-
+Фиксация изменений в репозитории
 ```sh
 $ git add .travis.yml
 $ git add tests
-$ git add -p
+$ git add -p # запрос на изменение
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 ...
 
@@ -159,17 +161,17 @@ Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
 $ git commit -m"added tests"
 $ git push origin master
 ```
-
+Логинимся и включаем TravisCI для репозитория
 ```sh
-$ travis login --auto
+$ travis login --
+Successfully logged in as Evgengrmit!
 $ travis enable
+Evgengrmit/lab05: enabled :)
 ```
-
+Создаем директорию и делаем скриншот с задержкой в 20 сек
 ```sh
 $ mkdir artifacts
-$ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
-# for macOS: $ screencapture -T 20 artifacts/screenshot.png
-# open https://github.com/${GITHUB_USERNAME}/lab05
+$ screencapture -T 20 artifacts/screenshot.png
 ```
 
 ## Report
