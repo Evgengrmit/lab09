@@ -175,7 +175,7 @@ $ screencapture -T 20 artifacts/screenshot.png
 ```
 
 ## Report
-
+Создание отчета по ЛР № 5
 ```sh
 $ popd
 $ export LAB_NUMBER=05
@@ -186,16 +186,6 @@ $ cd reports/lab${LAB_NUMBER}
 $ edit REPORT.md
 $ gist REPORT.md
 ```
-
-## Homework
-
-### Задание
-1. Создайте `CMakeList.txt` для библиотеки *banking*.
-2. Создайте модульные тесты на классы `Transaction` и `Account`.
-    * Используйте mock-объекты.
-    * Покрытие кода должно составлять 100%.
-3. Настройте сборочную процедуру на **TravisCI**.
-4. Настройте [Coveralls.io](https://coveralls.io/).
 
 ## Links
 
