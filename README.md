@@ -152,6 +152,10 @@ Hooray, .travis.yml looks valid :)
 $ git add .travis.yml
 $ git add tests
 $ git add -p
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+...
+
+Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
 $ git commit -m"added tests"
 $ git push origin master
 ```
