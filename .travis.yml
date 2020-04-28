@@ -8,7 +8,7 @@ script:
 - cmake --build _build
 - cd _build
 - cpack -G "TGZ"
-- cpack -G DragNDrop
+- cpack -G DEB
 - cd ..
 addons:
   apt:
