@@ -1,15 +1,30 @@
 language: cpp
-
+os: osx
 script:
 - cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
 - cmake --build _build
 - cmake --build _build --target install
 - cmake --build _build --target test -- ARGS=--verbose
-
+- cmake -H. -B_build
+- cmake --build _build
+- cd _build
+- cpack -G "TGZ"
+- cpack -G DragNDrop
+- cd ..
 addons:
   apt:
     sources:
-      - george-edison55-precise-backports
+    - george-edison55-precise-backports
     packages:
-      - cmake
-      - cmake-data
+    - cmake
+    - cmake-data
+deploy:
+  provider: releases
+  api_key:
+    secure: C056Kf/hi0P5dijO9eqP97BYY97fdtN5/T/0ERKsdVhmYWUOY8+P79jtYSHXFnCT2Klaz79oK1Ifeufclxw7+NcRA2BWZJCUAr9bWA2/lZNh7tAKJNgCR3bvCPdXZR4YkrcRuhbEY/IEGYty8/8/uxSAEClC5eiBIb+iheBS647+OIir9yjtxw1Mg8WCO9Q1dc+r1okCABdEFd55JP5vQKvrNFsJw9PAw7C4TIUWYpdnDTmLyuzh/VG3SrZeix6T0KJCiCSjHrd4mjgWD6gz38DLCK/1QS2mLew7nYZLFbLKwaf1mPXPgbTAuSdZHRQAEXzuN/HDdjlvMXTFK1wooPM563/ZRuUZwUdDCbQZFzPl9z1CCc6WBHn+ajVnxlvNms2rtcw4oOoZPakXN6QgnX9QS2HtXryBD0ZW3HQrrvoncU3CHDQwUX5klF1PW6Jm3fPi1sHjNEl588rxNcKVna33WsZdv/HHGmKyGDPP2cUdkXXKijLYyz2/1qlbQSLOoP5KW2Vfhba0ftTa6BFobentZLT2CRQFHjtkzxCdCavizTBQzEmnXk/ra40UWJJMYJTQgfz6g7G7gPbzoD/K3nmrSxyaR+DS6b1FGcV4gweAbZtF6++Uc+GCZH5xJtEDeyyygRxLAwc/NVMJ1YdysA3fOL6t9BS6Oi8OSWY2Wss=
+  file:
+    - _build/print-0.1.0.0-Darwin.dmg
+    - _build/print-0.1.0.0-Darwin.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true

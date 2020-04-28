@@ -177,7 +177,7 @@ $ cmake -H. -B_build
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build
-$ cmake --build
+$ cmake --build _build
 [ 50%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
 [100%] Linking CXX static library libprint.a
 [100%] Built target print
