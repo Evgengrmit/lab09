@@ -80,7 +80,7 @@ $ cat > CPackConfig.cmake <<EOF
 include(InstallRequiredSystemLibraries)
 EOF
 ```
-
+Установка значений переменных в пакете
 ```sh
 $ cat >> CPackConfig.cmake <<EOF
 set(CPACK_PACKAGE_CONTACT ${GITHUB_EMAIL})
@@ -93,7 +93,7 @@ set(CPACK_PACKAGE_DESCRIPTION_FILE \${CMAKE_CURRENT_SOURCE_DIR}/DESCRIPTION)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "static C++ library for printing")
 EOF
 ```
-
+Добавление файлов в пакет
 ```sh
 $ cat >> CPackConfig.cmake <<EOF
 
@@ -101,7 +101,7 @@ set(CPACK_RESOURCE_FILE_LICENSE \${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
 set(CPACK_RESOURCE_FILE_README \${CMAKE_CURRENT_SOURCE_DIR}/README.md)
 EOF
 ```
-
+Настройки для RPM-пакета
 ```sh
 $ cat >> CPackConfig.cmake <<EOF
 
@@ -112,7 +112,7 @@ set(CPACK_RPM_CHANGELOG_FILE \${CMAKE_CURRENT_SOURCE_DIR}/ChangeLog.md)
 set(CPACK_RPM_PACKAGE_RELEASE 1)
 EOF
 ```
-
+Настройки для Debian-пакета
 ```sh
 $ cat >> CPackConfig.cmake <<EOF
 
@@ -121,14 +121,14 @@ set(CPACK_DEBIAN_PACKAGE_PREDEPENDS "cmake >= 3.0")
 set(CPACK_DEBIAN_PACKAGE_RELEASE 1)
 EOF
 ```
-
+Подключение модуля CPack
 ```sh
 $ cat >> CPackConfig.cmake <<EOF
 
 include(CPack)
 EOF
 ```
-
+Добавление `CPackConfig.cmake` в основной `CMakeLists.txt`
 ```sh
 $ cat >> CMakeLists.txt <<EOF
 
@@ -139,30 +139,72 @@ EOF
 ```sh
 $ gsed -i 's/lab05/lab06/g' README.md
 ```
-
+Добавляем созданные файлы в репозиторий, делаем коммит, добавляем тэг с версией, загружаем на удаленный репозиторий уже с тэгом
 ```sh
 $ git add .
 $ git commit -m"added cpack config"
+[master 6c3facf] added cpack config
+ 5 files changed, 226 insertions(+), 197 deletions(-)
+ create mode 100644 CPackConfig.cmake
+ create mode 100644 ChangeLog.md
+ create mode 100644 DESCRIPTION
+ rewrite README.md (77%)
 $ git tag v0.1.0.0
 $ git push origin master --tags
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (7/7), 3.08 KiB | 3.08 MiB/s, done.
+Total 7 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/Evgengrmit/lab06
+   7d9576e..6c3facf  master -> master
+ * [new tag]         v0.1.0.0 -> v0.1.0.0
 ```
 
 ```sh
 $ travis login --auto
+Successfully logged in as Evgengrmit!
 $ travis enable
+Evgengrmit/lab06: enabled :)
 ```
 
 ```sh
 $ cmake -H. -B_build
-$ cmake --build _build
+-- The C compiler identification is AppleClang 11.0.3.11030032
+...
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build
+$ cmake --build
+[ 50%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
+[100%] Linking CXX static library libprint.a
+[100%] Built target print
 $ cd _build
 $ cpack -G "TGZ"
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print []
+CPack: Create package
+CPack: - package: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build/print-0.1.0.0-Darwin.tar.gz generated.
 $ cd ..
 ```
 
 ```sh
 $ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build
 $ cmake --build _build --target package
+Run CPack packaging tool...
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print []
+CPack: Create package
+CPack: - package: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build/print-0.1.0.0-Darwin.tar.gz generated.
 ```
 
 ```sh
