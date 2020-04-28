@@ -162,14 +162,14 @@ To https://github.com/Evgengrmit/lab06
    7d9576e..6c3facf  master -> master
  * [new tag]         v0.1.0.0 -> v0.1.0.0
 ```
-
+Авторизация в `travis-ci`
 ```sh
 $ travis login --auto
 Successfully logged in as Evgengrmit!
 $ travis enable
 Evgengrmit/lab06: enabled :)
 ```
-
+Сборка и генерация пакета (1 способ через `CPack`)
 ```sh
 $ cmake -H. -B_build
 -- The C compiler identification is AppleClang 11.0.3.11030032
@@ -191,7 +191,7 @@ CPack: Create package
 CPack: - package: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build/print-0.1.0.0-Darwin.tar.gz generated.
 $ cd ..
 ```
-
+Сборка и генерация пакета (2 способ через `CMake`)
 ```sh
 $ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
 -- Configuring done
