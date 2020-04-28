@@ -18,7 +18,8 @@ addons:
     - cmake-data
 deploy:
   provider: releases
-  api_key: 06905acd3cd6230575f5ae14e6ade43abe461598
+  api_key:
+     secure: "iv+vW9INw0bMI2v9mcxGF8QeoOWZNRj34MPbZrXqjDrgD72oc/iYOLL7OGJ+qGO79NZTfOe94F6uezRUFR6duIgaKBU72yFx6eZOxmwltDd+FDb+g+D7h4UtEwpxWcPKTRHKG+U0xMhszTeAMPytw5AxHm71gyNd9LOZAVyfmypgZSgT2HA/CwXOy8PNwAAt3D9DnZ0k/tAPhlaLGszxqeKEThkI2LlmUZIkeZCFPx+0a4SP+wG25zo8mBXHLGojy7PRTuZF+eVkGT7cFjOdar3ShjzMFIk5iQzuTBp0Xa+E55cT+2StdUPSmzoOvtNAN5A2FRhJuMmFkJXsxQPUtcKvTkeqa31DBUNedQjvSpTQldvNFuAwHM+vj8kkrl6b2DDJG8lwZmldifrqnwq/M9pEzMlYWkjRtfjiECPVQS68CvDw5JKHfBc7eptJWiUhAaftM+vXm0x3vIDXMi2vA3pVdhE9Q+bQwuO5QbtwPcv6mDnB8o/0VShUzxMiVYEyQLX+zQ4TsmkRV/ndOsk/a4Sna28/JAcgHzG9RdtRO3DmAbkqGOsKzwMevGJQHB0CqrQzDr2s1DvICqVI9seBQou9cLEzcWjuwaSq3355El3PlFxnrsvuAMbPPkCrsqIMoeX5OtBXYkoKI97fPLAWXwYGg3/NggfnW1jY8I/Kgvg="
   file:
     -_build/*.deb
   skip_cleanup: true
