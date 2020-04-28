@@ -19,8 +19,10 @@ addons:
 deploy:
   provider: releases
   api_key:
+    92b8343847599e3119bfaa5e23a17f1e19876e24
     secure: XfoKO05xFYo2O1y4ceChzmfKcR6JHpbEJUrDrf8ajNnET//KZ7M9Pd8dLFxtAujuxuOi6h0ngqZi08xtJT6OsWXRtjB0SJZFNGkac35Vy9x8NXzXYyf9/qigY3FBWpInDALRdPnT6W9TlwHBDcXX8hLMjJiqPBExMVpRGpdutCEyeHRLEPgQzvCFNMLu7VzjeUd2pJOyTT4pr7TD90J1LYM9RKvs8YwLdcvha2Vy9eRdeg8JPQHkxOXPvL8f7pPfmYvBx7rblq7xaL9FK2CmqVsKPReFmVS3Bzxl+vjWm33ugZxSZ0GSQrt2asgs0ncTREf2TrJLaRr9Q5OIv01F7erKlo2VLsGX2V40pzqvG1y/67Xa6ydD+Fm0cZN8scZIsRxKkR8Mgbu0WryUJ3YQ5deocijVH7tLJoly6Q7Ceo5w5LlDvJB1YEk5HQ2wErbS2YDY4Z8IH5JOiLq/J1/qVZWyXafGHYWTUO0BiHtXzBslMtZ7EgsWIkPIMgo0tccl2awjjN11bGcgf5a78nI5L6NZnSaSMOb+MA5oN4uMHE8LV8TdxyGFQCvJ6/WAaYY+LoW7FdpwjBrIaiaTOo23aYLNx4WifbfUA4kYI+d1aVitFZiqHcR+C5aHf0eU6wNzhxGi1Gnugzly2KgG4oFfAHxhQMxJjmVw2nnWpNCZLKY=
-  file: _build/*.deb _build/*.tar.gz
+  file:
+    -_build/*.deb
   skip_cleanup: true
   on:
     tags: true
