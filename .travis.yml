@@ -18,7 +18,7 @@ addons:
     - cmake-data
 deploy:
   provider: releases
-  api_key:  92b8343847599e3119bfaa5e23a17f1e19876e24
+  api_key: 06905acd3cd6230575f5ae14e6ade43abe461598
   file:
     -_build/*.deb
   skip_cleanup: true
