@@ -4,9 +4,9 @@ os:
   - linux
 jobs:
   include:
-    - name: "OSX"
-          os: osx
-          script:
+     name: "OSX"
+     os: osx
+     script:
              - cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
              - cmake --build _build
              - cmake --build _build --target install
@@ -16,9 +16,9 @@ jobs:
              - cd _build
              - cpack -G DragNDrop
              - cd ..
-     - name: "Linux"
-           os: linux
-           script:
+     name: "Linux"
+     os: linux
+     script:
              - cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
              - cmake --build _build
              - cmake --build _build --target install
