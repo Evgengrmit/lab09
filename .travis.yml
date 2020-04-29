@@ -1,27 +1,33 @@
 language: cpp
+os:
+  - osx
+  - linux
 jobs:
   include:
-    - os: osx
+  - name: "OSX"
+    os: osx
     script:
-      - cmake -H. -B_build
-      - cmake --build _build
-      - cd _build
-      - cpack -G DragNDrop
-      - cd ..
-    - os: linux
+    - cmake -H. -B_build
+    - cmake --build _build
+    - cd _build
+    - cpack -G DragNDrop
+    - cd ..
+  - name: "each CMakeLists.txt"
+    os: linux
     script:
-      - cmake -H. -B_build
-      - cmake --build _build
-      - cd _build
-      - cpack -G DEB
-      - cd ..
+    - cmake -H. -B_build
+    - cmake --build _build
+    - cd _build
+    - cpack -G DEB
+    - cd ..
 addons:
   apt:
     sources:
-      - george-edison55-precise-backports
+    - george-edison55-precise-backports
     packages:
       - cmake
       - cmake-data
+
 deploy:
   provider: releases
   api_key:
