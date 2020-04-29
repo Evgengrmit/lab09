@@ -4,16 +4,14 @@ os:
   - linux
 jobs:
   include:
-  - name: "OSX"
-      os: osx
+  - os: osx
       script:
       - cmake -H. -B_build
       - cmake --build _build
       - cd _build
       - cpack -G DragNDrop
       - cd ..
-  - name: "Linux"
-      os: linux
+  - os: linux
       script:
       - cmake -H. -B_build
       - cmake --build _build
