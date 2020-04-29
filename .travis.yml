@@ -4,35 +4,29 @@ os:
   - linux
 jobs:
   include:
-     name: "OSX"
-     os: osx
-     script:
-             - cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
-             - cmake --build _build
-             - cmake --build _build --target install
-             - cmake --build _build --target test -- ARGS=--verbose
-             - cmake -H. -B_build
-             - cmake --build _build
-             - cd _build
-             - cpack -G DragNDrop
-             - cd ..
-     name: "Linux"
-     os: linux
-     script:
-             - cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
-             - cmake --build _build
-             - cmake --build _build --target install
-             - cmake --build _build --target test -- ARGS=--verbose
-             - cmake -H. -B_build
-             - cmake --build _build
-             - cd _build
-             - cpack -G DEB
-             - cd ..
+  - name: "OSX"
+      os: osx
+      script:
+      - cmake -H. -B_build
+      - cmake --build _build
+      - cd _build
+      - cpack -G DragNDrop
+      - cd ..
+  - name: "Linux"
+      os: linux
+      script:
+      - cmake -H. -B_build
+      - cmake --build _build
+      - cd _build
+      - cpack -G DEB
+      - cd ..
 addons:
   apt:
+    sources:
+      - george-edison55-precise-backports
     packages:
-    - cmake
-    - cmake-data
+      - cmake
+      - cmake-data
 deploy:
   provider: releases
   api_key:
