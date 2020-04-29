@@ -23,6 +23,7 @@ addons:
     packages:
       - cmake
       - cmake-data
+      - rpm
 
 deploy:
   provider: releases
