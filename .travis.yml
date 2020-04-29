@@ -1,15 +1,14 @@
 language: cpp
-os: osx
-      script:
-        - cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
-        - cmake --build _build
-        - cmake --build _build --target install
-        - cmake --build _build --target test -- ARGS=--verbose
-        - cmake -H. -B_build
-        - cmake --build _build
-        - cd _build
-        - cpack -G DragNDrop
-        - cd ..
+script:
+- cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
+- cmake --build _build
+- cmake --build _build --target install
+- cmake --build _build --target test -- ARGS=--verbose
+- cmake -H. -B_build
+- cmake --build _build
+- cd _build
+- cpack -G DEB
+- cd ..
 addons:
   apt:
     packages:
@@ -20,7 +19,7 @@ deploy:
   api_key:
     secure: kVLRwALhGd8tVlrpM60yMprLrA2ghZdaxN6P9020ljuV2l3AAxumtAgf/4NJtQuu4mfHedHjjm0T2RvcdYGtfnYThn1b+CPGapTVupHVaHO/K/aVnMBzG9GJrcwfZp4eC3Y+soNwvZ2wpXqsZNzrC1riFFBVaswiGHeG6sIk2oIO2BNZJlvIjT6Vr/fvq154Yfo9ekGvsdDuQEyURqM840nGxMdUDJA3Ry9JzMOh3RsaScBwmPf8OgRpA6sdz2ToPhzjWIa+0lXHP7+nESU8iN9eBEMYyRF+3wAu8a/cE9E/LIX6Hq/QcqUN2b6QRFDLhkKhh57qf75q9ZM+N5BHUT7Az3OeAQaUZyYjPh5p10UD91ZxuKh082X1o3+ZNxNZ5u/UTh3ANpmB0SptBTFSUEUhjRfjh8QE2CkG+zGdHxe87ZYJVX0WkePsyKEmIfZ3sMLn4u6Ayl2A/I4RQChuiminLViO6Ju0YkNpGs9Uhrt355EGjpJIzLY0WeGTGU5UJAH9kN9Y+GvmTMU8XG6sKSjZH2UklUxDfcI66Z5GcAhXZ9SQnICbtOB3+L5bvvwr295npxc8INcFZIrtvty7cFtbmSiH7WrX+8fLmDZz+1FJva5N+Hik45tehAgPrwQDz4Zgd78o/817fBT0y95rlRB8ym4pnd+LCiWR3KS93hQ=
   file:
-    - ./_build/print-0.1.0.0-Darwin.dmg
+    - ./_build/print-0.1.0.0-Linux.deb
   skip_cleanup: true
   on:
     tags: true
