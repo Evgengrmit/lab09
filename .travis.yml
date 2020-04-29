@@ -14,6 +14,7 @@ jobs:
     - cmake --build _build
     - cd _build
     - cpack -G DEB
+    - cpack -G RPM
     - cd ..
 addons:
   apt:
