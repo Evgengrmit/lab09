@@ -1,14 +1,20 @@
 language: cpp
-os:
-  - osx
 jobs:
   include:
-    os: osx
+    - os: osx
     script:
       - cmake -H. -B_build
       - cmake --build _build
       - cd _build
-      - cpack -G
+      - cpack -G DragNDrop
+      - cd ..
+    - os: linux
+    script:
+      - cmake -H. -B_build
+      - cmake --build _build
+      - cd _build
+      - cpack -G DEB
+      - cd ..
 addons:
   apt:
     sources:
