@@ -207,7 +207,7 @@ CPack: - Install project: print []
 CPack: Create package
 CPack: - package: /Users/evgengrmit/Evgengrmit/workspace/projects/lab06/_build/print-0.1.0.0-Darwin.tar.gz generated.
 ```
-
+Перемещение в `artifacts`
 ```sh
 $ mkdir artifacts
 $ mv _build/*.tar.gz artifacts
