@@ -32,6 +32,7 @@ deploy:
   file:
     - ./_build/print-0.1.0.0-Darwin.dmg
     - ./_build/print-0.1.0.0-Linux.deb
+    - ./_build/print-0.1.0.0-Linux.rpm
   skip_cleanup: true
   on:
     tags: true
