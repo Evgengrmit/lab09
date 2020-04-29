@@ -18,17 +18,14 @@ jobs:
     - cd ..
 addons:
   apt:
-    sources:
-    - george-edison55-precise-backports
     packages:
-      - cmake
-      - cmake-data
-      - rpm
-
+    - cmake
+    - cmake-data
+    - rpm
 deploy:
   provider: releases
   api_key:
-    secure: kVLRwALhGd8tVlrpM60yMprLrA2ghZdaxN6P9020ljuV2l3AAxumtAgf/4NJtQuu4mfHedHjjm0T2RvcdYGtfnYThn1b+CPGapTVupHVaHO/K/aVnMBzG9GJrcwfZp4eC3Y+soNwvZ2wpXqsZNzrC1riFFBVaswiGHeG6sIk2oIO2BNZJlvIjT6Vr/fvq154Yfo9ekGvsdDuQEyURqM840nGxMdUDJA3Ry9JzMOh3RsaScBwmPf8OgRpA6sdz2ToPhzjWIa+0lXHP7+nESU8iN9eBEMYyRF+3wAu8a/cE9E/LIX6Hq/QcqUN2b6QRFDLhkKhh57qf75q9ZM+N5BHUT7Az3OeAQaUZyYjPh5p10UD91ZxuKh082X1o3+ZNxNZ5u/UTh3ANpmB0SptBTFSUEUhjRfjh8QE2CkG+zGdHxe87ZYJVX0WkePsyKEmIfZ3sMLn4u6Ayl2A/I4RQChuiminLViO6Ju0YkNpGs9Uhrt355EGjpJIzLY0WeGTGU5UJAH9kN9Y+GvmTMU8XG6sKSjZH2UklUxDfcI66Z5GcAhXZ9SQnICbtOB3+L5bvvwr295npxc8INcFZIrtvty7cFtbmSiH7WrX+8fLmDZz+1FJva5N+Hik45tehAgPrwQDz4Zgd78o/817fBT0y95rlRB8ym4pnd+LCiWR3KS93hQ=
+    secure: s2XvXR18Fsfu3FoxzscQQFU9Qr0C5lr/DjiCoFLX7MCnTQP7r4u/eoULz5e0VaV0RdHX7U20eQSknGME5j4TGGqwi81WITaFNssLUxHpg9NabN2RdthIcjf972PlPQzjKv26d5wZA2ySOozyiFLa18JKWY65q/iRv6RTqbNv6WglS0kIIQjjBsHJ8LiMxPb54fsECfPs6O7FmLXC4kM5VRjczp/LACoiU+pemC7ByWFsI0WGzv8fHK/HO0oc4CZPIc1hWXEeNGFwKMLm+Z26t9nmwchqb8wHfnf0T3qFQGFzKXDHXoJi/SKO2BV1AKeDb9wTXw+vjuny9k2t+WjDeo4SxoA6SashKeruX3fdcYbbGnSMfVhqcLhwUR+mmJsSB2PTavpnLJdpW3kC+w+X3qDPcuoxP2bt/6tIEYweMs9aH23ZGOAvrS7SPYz/GycT+ZwA0pGesplkrUhGY7Kq+B1QaK33QHcbjsErkTX5UfrL9h7ITieMQfg7EyHunCTKtTiEgkd4Bb9+HIbqqjCYmKFrqPiXAwsvcN99I/x8YJTmy0XsAMibP7+fKmk2lKVp/JhJCfBuwV0fHhzb72lQnRxZKfo7XxPPshcZMkxzsP77qJFvKB6I5NChGeE2DWBgKoqITO6V0qlJm76yS+B7PkSH/fOEA3iggkwwxaykzmc=
   file:
     - ./_build/print-0.1.0.0-Darwin.dmg
     - ./_build/print-0.1.0.0-Linux.deb
