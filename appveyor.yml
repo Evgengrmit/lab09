@@ -1,6 +1,7 @@
 image: Visual Studio 2019
 platform: x86
 configuration: Release
+
 build_script:
   - cmd: cmake -H. -B_build
   - cmd: cmake --build _build --config Release
@@ -8,12 +9,16 @@ build_script:
   - cmd: ls
   - cmd: cpack -G WIX
   - cmd: cd ..
+
+artifacts:
+  - path: ./_build/print-0.1.0.0-win64.msi
+    name: print.msi
 deploy:
   release: $(APPVEYOR_REPO_TAG_NAME)
   description: 'Release description'
   provider: GitHub
   auth_token:
     secure: tZdq4qXRLud/z27+KjHqLP0jpdTdUkrQ1XmSJMbSAnd2KTvjSqLjRlueHzHPhzLe # your encrypted token from GitHub
-  artifact: ./_build/print-0.1.0.0-win64.msi           # upload all NuGet packages to release assets
+  artifact: print.msi           # upload all NuGet packages to release assets
   on:
     APPVEYOR_REPO_TAG: true        # deploy on tag push only
