@@ -8,6 +8,8 @@ build_script:
   - cmd: cmake --build _build
   - cmd: cd _build
   - cmd: ls
+  - cmd: cd Debug
+  - cmd: ls
   - cmd: cpack -G WIX
   - cmd: cd ..
 deploy:
