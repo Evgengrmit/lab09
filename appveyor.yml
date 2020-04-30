@@ -3,13 +3,16 @@ image: Visual Studio 2019
 platform:
 - x86
 - x64
+configuration:
+  - Release
 build_script:
   - cmd: cmake -H. -B_build
   - cmd: cmake --build _build
   - cmd: cd _build
   - cmd: ls
-  - cmd: cd Debug
+  - cmd: cd Release
   - cmd: ls
+  - cmd: cd ..
   - cmd: cpack -G WIX
   - cmd: cd ..
 deploy:
