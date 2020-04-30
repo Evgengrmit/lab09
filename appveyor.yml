@@ -2,12 +2,12 @@ image: Visual Studio 2019
 platform: x86
 configuration: Release
 build_script:
-  - cmd: cmake -H. -B_build
+  - cmd: cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release
   - cmd: cmake --build _build
   - cmd: cd _build
   - cmd: ls
   - cmd: cd ..
-  - cmd: cpack -G WIX -C Debug
+  - cmd: cpack -G WIX
   - cmd: cd ..
 deploy:
   release: $(APPVEYOR_REPO_TAG_NAME)
