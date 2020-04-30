@@ -1,0 +1,20 @@
+image: Visual Studio 2019
+
+platform:
+- x86
+- x64
+build_script:
+  - cmd: cmake -H. -B_build
+  - cmd: cmake --build _build
+  - cmd: cd _build
+  - cmd: cpack -G WIX
+  - cmd: cd ..
+deploy:
+  release: $(APPVEYOR_REPO_TAG_NAME)
+  description: 'Release description'
+  provider: GitHub
+  auth_token:
+    secure: tZdq4qXRLud/z27+KjHqLP0jpdTdUkrQ1XmSJMbSAnd2KTvjSqLjRlueHzHPhzLe # your encrypted token from GitHub
+  artifact: _build\*.msi           # upload all NuGet packages to release assets
+  on:
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only
