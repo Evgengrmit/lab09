@@ -1,5 +1,7 @@
 image: Visual Studio 2019
-platform: x86
+platform:
+  - x86
+  - x64
 configuration: Release
 
 build_script:
@@ -11,7 +13,7 @@ build_script:
   - cmd: cd ..
 
 artifacts:
-  - path: ./_build/print-0.1.0.0-win64.msi
+  - path: ./_build/*.msi
     name: print
 deploy:
   release: $(APPVEYOR_REPO_TAG_NAME)
