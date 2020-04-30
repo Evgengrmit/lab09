@@ -6,7 +6,8 @@ platform:
 build_script:
   - cmd: cmake -H. -B_build
   - cmd: cmake --build _build
-  - cmd: cd _build
+  - cmd: cd _build/Release
+  - cmd: ls
   - cmd: cpack -G WIX
   - cmd: cd ..
 deploy:
