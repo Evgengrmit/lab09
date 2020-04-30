@@ -14,6 +14,6 @@ deploy:
   provider: GitHub
   auth_token:
     secure: tZdq4qXRLud/z27+KjHqLP0jpdTdUkrQ1XmSJMbSAnd2KTvjSqLjRlueHzHPhzLe # your encrypted token from GitHub
-  artifact: _build\*.msi           # upload all NuGet packages to release assets
+  artifact: ./_build/print-0.1.0.0-win64.msi           # upload all NuGet packages to release assets
   on:
     APPVEYOR_REPO_TAG: true        # deploy on tag push only
