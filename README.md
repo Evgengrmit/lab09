@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/Evgengrmit/lab06.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab06)
+[![Build status](https://ci.appveyor.com/api/projects/status/w67smbuw9q9b72bi/branch/master?svg=true)](https://ci.appveyor.com/project/Evgengrmit/lab06/branch/master)
+
 ## Laboratory work VI
 
 <a href="https://yandex.ru/efir/?stream_id=vGWlFO3of-Rg"><img src="https://raw.githubusercontent.com/tp-labs/lab06/master/preview.png" width="640"/></a>
