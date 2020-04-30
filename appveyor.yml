@@ -10,6 +10,7 @@ build_script:
   - cmd: cd _build
   - cmd: ls
   - cmd: cpack -G WIX
+  - cmd: ./_CPack_Packages/win64/WIX/wix.log
   - cmd: cd ..
 
 artifacts:
