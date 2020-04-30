@@ -2,11 +2,10 @@ image: Visual Studio 2019
 platform: x86
 configuration: Release
 build_script:
-  - cmd: cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release
-  - cmd: cmake --build _build
+  - cmd: cmake -H. -B_build
+  - cmd: cmake --build _build --config Release
   - cmd: cd _build
   - cmd: ls
-  - cmd: cd ..
   - cmd: cpack -G WIX
   - cmd: cd ..
 deploy:
