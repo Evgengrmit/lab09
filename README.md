@@ -1,5 +1,6 @@
 ## Laboratory work VIII
 [![Build Status](https://travis-ci.com/Evgengrmit/lab08.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab08)
+
 <a href="https://yandex.ru/efir/?stream_id=v0mnBi_R2Ldw"><img src="https://raw.githubusercontent.com/tp-labs/lab08/master/preview.png" width="640"/></a>
 
 Данная лабораторная работа посвещена изучению систем автоматизации развёртывания и управления приложениями на примере **Docker**
