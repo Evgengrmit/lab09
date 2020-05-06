@@ -1,4 +1,6 @@
 ## Laboratory work VII
+[![Build Status](https://travis-ci.com/Evgengrmit/lab07.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab07)
+[![Build status](https://ci.appveyor.com/api/projects/status/dtc14dr12tn3xo6m?svg=true)](https://ci.appveyor.com/project/Evgengrmit/lab07)
 
 <a href="https://yandex.ru/efir/?stream_id=vDHLoKtKoa3o"><img src="https://raw.githubusercontent.com/tp-labs/lab07/master/preview.png" width="640"/></a>
 
