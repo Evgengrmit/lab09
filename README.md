@@ -144,7 +144,7 @@ text3
 ```sh
 $ gsed -i 's/lab07/lab08/g' README.md
 ```
-Изменение `.travis.yml` для сборки в контейнере
+Изменение `.travis.yml` для сборки в контейнере.
 ```sh
 $ vim .travis.yml
 /lang<CR>o
@@ -155,22 +155,26 @@ script:
 - docker build -t logger .<ESC>
 :wq
 ```
-Добавление **Docker** в репозиторий
+Добавление **Docker** в репозиторий.
 ```sh
 $ git add Dockerfile
 $ git add .travis.yml
 $ git commit -m"adding Dockerfile"
 $ git push origin master
 ```
-
+Активация непрерывной интеграции с **Travis CI**.
 ```sh
-$ travis login --auto
-$ travis enable
+# Флаг --com  для работы с travis-ci.com
+$ travis login --auto --com
+Successfully logged in as Evgengrmit!
+$ travis enable --com
+Evgengrmit/lab08: enabled :)
 ```
 
 ## Report
 
 ```sh
+Создание отчета по ЛР № 8
 $ popd
 $ export LAB_NUMBER=08
 $ git clone https://github.com/tp-labs/lab${LAB_NUMBER} tasks/lab${LAB_NUMBER}
