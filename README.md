@@ -1,196 +1,254 @@
-## Laboratory work VIII
-[![Build Status](https://travis-ci.com/Evgengrmit/lab08.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab08)
+## Laboratory work IX
+[![Build Status](https://travis-ci.com/Evgengrmit/lab09.svg?branch=master)](https://travis-ci.com/Evgengrmit/lab09)
 
-<a href="https://yandex.ru/efir/?stream_id=v0mnBi_R2Ldw"><img src="https://raw.githubusercontent.com/tp-labs/lab08/master/preview.png" width="640"/></a>
+<a href="https://yandex.ru/efir/?stream_id=vYrKRcFKi46o"><img src="https://raw.githubusercontent.com/tp-labs/lab09/master/preview.png" width="640"/></a>
 
-Данная лабораторная работа посвещена изучению систем автоматизации развёртывания и управления приложениями на примере **Docker**
+Данная лабораторная работа посвещена изучению процесса создания артефактов на примере **Github Release**
 
 ```sh
-$ open https://docs.docker.com/get-started/
+$ open https://help.github.com/articles/creating-releases/
 ```
 
 ## Tasks
 
-- [x] 1. Создать публичный репозиторий с названием **lab08** на сервисе **GitHub**
+- [x] 1. Создать публичный репозиторий с названием **lab09** на сервисе **GitHub**
 - [x] 2. Ознакомиться со ссылками учебного материала
-- [x] 3. Выполнить инструкцию учебного материала
-- [x] 4. Составить отчет и отправить ссылку личным сообщением в **Slack**
+- [x] 3. Получить токен для доступа к репозиториям сервиса **GitHub**
+- [x] 4. Выполнить инструкцию учебного материала
+- [x] 5. Составить отчет и отправить ссылку личным сообщением в **Slack**
 
 ## Tutorial
-
-Создание переменных среды и установка их значений, а также связывание команд с их "новыми" названиями.
+Создание переменных среды и установка их значений.
 ```sh
+$ export GITHUB_TOKEN=**********************
 $ export GITHUB_USERNAME=Evgengrmit
+$ export PACKAGE_MANAGER=brew
+$ export GPG_PACKAGE_NAME=gpg
 ```
-Начало работы в каталоге `workspace`
+Установка утилиты **xclip**, которая представляет доступ к буферу обмена X из командной строки.
+```sh
+# for *-nix system
+$ $PACKAGE_MANAGER install xclip
+$ alias gsed=sed
+# Связывание команды pbcopy с записью данных в секцию clipboard
+$ alias pbcopy='xclip -selection clipboard'
+# Связывание команды pbpaste с чтением данных из секции clipboard
+$ alias pbpaste='xclip -selection clipboard -o'
+```
+Установка приложения командной строки **github-release**, для работы с релизами на **Github**.
 ```sh
 # Переход в  рабочую директорию
 $ cd ${GITHUB_USERNAME}/workspace
 $ pushd . # Сохранение текущего каталога в стек
 # Активация Node.js и rvm
 $ source scripts/activate
+# Скачивание и установка пакета, написанного на языке программирования Go
+$ go get github.com/aktau/github-release
 ```
-Настройка git-репозитория **lab07** для работы
+Настройка git-репозитория **lab09** для работы.
 ```sh
-$ git clone https://github.com/${GITHUB_USERNAME}/lab07 lab08
-$ cd lab08
-# Инциализация подмодуля
-$ git submodule update --init
-Submodule 'tools/polly' (https://github.com/ruslo/polly) registered for path 'tools/polly'
-Cloning into '/Users/evgengrmit/Evgengrmit/workspace/projects/lab08/tools/polly'...
-Submodule path 'tools/polly': checked out '0b3806e193b668fbb9b70c9aa70735b29396323d'
+$ git clone https://github.com/${GITHUB_USERNAME}/lab08 projects/lab09
+$ cd projects/lab09
 $ git remote remove origin
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab08
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab09
 ```
-Создаем `Dockerfile`. В самом начале указываем базовый образ (В нашем случае это Ubuntu 18.04), который определяет рабочую среду,пакеты и утилиты необходимые для запуска приложения в нашем контейнере. В Dockerfile содержатся инструкции по созданию образа.
+Замена всех упоминаний `lab08` на `lab09`.
 ```sh
-$ cat > Dockerfile <<EOF
-FROM ubuntu:18.04
-EOF
+$ gsed -i "" 's/lab08/lab09/g' README.md
 ```
-Выполняем обновление списка пакетов **APT** в базовом образе - утилиты для управления пакетами. Затем с его помощью устанавливаем компиляторы и `CMake`.
+Установка и работа с программой **GPG** для шифрования информации и создания электронных цифровых подписей.
 ```sh
-$ cat >> Dockerfile <<EOF
+# Установка программы
+$ $PACKAGE_MANAGER install ${GPG_PACKAGE_NAME}
+# Список всех сгенерированных ключей в длинном формате
+$ gpg --list-secret-keys --keyid-format
+gpg: создан каталог '/Users/evgengrmit/.gnupg'
+gpg: создан щит с ключами '/Users/evgengrmit/.gnupg/pubring.kbx'
+gpg: /Users/evgengrmit/.gnupg/trustdb.gpg: создана таблица доверия
+# Генерация полноценной пары ключей для создания релизов
+$ gpg --full-generate-key
+открытый и секретный ключи созданы и подписаны.
 
-RUN apt update
-# Флаг yy говорит соглашаться со всеми вопросами. которые возникают в ходе установки
-RUN apt install -yy gcc g++ cmake
-EOF
-```
-Инструкция `COPY` сообщает Docker о том, что нужно взять файлы и папки из локального контекста сборки и добавить их в текущую рабочую директорию образа. Если целевая директория не существует, эта инструкция её создаст.
-Инструкция `WORKDIR` позволяет изменить рабочую директорию контейнера.
-```sh
-$ cat >> Dockerfile <<EOF
-# Добавляем все файлы  из текущей директории в создаваемый образ
-COPY . print/
-# Переходим в созданный каталог
-WORKDIR print
-EOF
-```
-Инструкция `RUN` позволяет создать слой во время сборки образа. После её выполнения в образ добавляется новый слой, его состояние фиксируется. Инструкция RUN часто используется для установки в образы дополнительных пакетов.
-```sh
-$ cat >> Dockerfile <<EOF
-# Выполняем сборку нашего проекта
-RUN cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=_install
-RUN cmake --build _build
-RUN cmake --build _build --target install
-EOF
-```
-Инструкция `ENV` позволяет задавать постоянные переменные среды, которые будут доступны в контейнере во время его выполнения.
-```sh
-$ cat >> Dockerfile <<EOF
-# Задаем переменную LOG_PATH
-ENV LOG_PATH /home/logs/log.txt
-EOF
-```
-Инструкция `VOLUME` позволяет указать место, которое контейнер будет использовать для постоянного хранения файлов и для работы с такими файлами.
-```sh
-$ cat >> Dockerfile <<EOF
-# Указываем в какой директории будут храниться файлы, которые останутся после работы с контейнером
-VOLUME /home/logs
-EOF
-```
-Переход в созданную в процессе сборки директорию `_install/bin`
-```sh
-$ cat >> Dockerfile <<EOF
-
-WORKDIR _install/bin
-EOF
-```
-Инструкция `ENTRYPOINT` позволяет задавать команду с аргументами, которая должна выполняться при запуске контейнера. Она похожа на команду `CMD`, но параметры, задаваемые в `ENTRYPOINT`, не перезаписываются в том случае, если контейнер запускают с параметрами командной строки.
-```sh
-$ cat >> Dockerfile <<EOF
-# В нащем случае команда ENTRYPOINT опреедляет точку входа в приложение
-ENTRYPOINT ./demo
-EOF
-```
-Сборка образа с тегом `logger` и путем к `Dockerfile`
-```sh
-$ docker build -t logger .
+pub   rsa4096 2020-05-08 [SC]
+      02A40AF6288ECC99D486C4AFD7C1F3269EC77E39
+uid                      Evgenij Grigorev (Creating the first release on Github) <evgengrmit@icloud.com>
+sub   rsa4096 2020-05-08 [E]
+$ gpg --list-secret-keys --keyid-format LONG
+evgengrmit@MBPEvgeGrigorev lab09 % gpg --list-secret-keys --keyid-format LONG
+gpg: проверка таблицы доверия
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: глубина: 0  достоверных:   1  подписанных:   0  доверие: 0-, 0q, 0n, 0m, 0f, 1u
+/Users/evgengrmit/.gnupg/pubring.kbx
+------------------------------------
+sec   rsa4096/D7C1F3269EC77E39 2020-05-08 [SC]
+      -----------------------------------------
+uid               [  абсолютно ] Evgenij Grigorev (Creating the first release on Github) <evgengrmit@icloud.com>
+ssb   rsa4096/E9284E5876D10536 2020-05-08 [E]
+# Вывести список приватных ключей для пользователя Evgengrmit
+$ gpg -K ${GITHUB_USERNAME}
+# Создание переменной окружения с сохраненным в ней публичным ключом
+$ GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep ssb | tail -1 | awk '{print $2}' | awk -F'/' '{print $2}')
+# Создание переменной окружения с сохраненным в ней секретным ключом
+$ GPG_SEC_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | tail -1 | awk '{print $2}' | awk -F'/' '{print $2}')
+# Вывести ключ в ASCII и копировать его в буфер
+$ gpg --armor --export ${GPG_KEY_ID} | pbcopy
+# Вставить из буфера
+$ pbpaste
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 ...
-Successfully built fddd81a7cfee
-Successfully tagged logger:latest
+-----END PGP PUBLIC KEY BLOCK-----
+$ open https://github.com/settings/keys
+# Добавление секретного ключа к настройкам Git'a
+$ git config user.signingkey ${GPG_SEC_KEY_ID}
+$ git config gpg.program gpg
 ```
-Команда, которая выводит всю информацию об образах
+Создание скрипта дя добавления сообщения к тегу
 ```sh
-$ docker images
-REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
-logger                    latest              fddd81a7cfee        9 minutes ago       357MB
-ubuntu                    18.04               c3c304cb4f22        12 days ago         64.2MB
-hello-world               latest              bf756fb1ae65        4 months ago        13.3kB
-rusdevops/bootstrap-cpp   latest              2596a89150d1        17 months ago       976MB
+$ test -r ~/.zsh_profile && echo 'export GPG_TTY=$(tty)' >> ~/.zsh_profile
+$ echo 'export GPG_TTY=$(tty)' >> ~/.profile
 ```
-Запуск контейнера в интерактивном режиме. Флаг `-v` указывает куда сохранять получаемые в контейнере файлы.
+Генерация пакета с расширением `.tar.gz`
 ```sh
-$ mkdir logs
-$ docker run -it -v "$(pwd)/logs/:/home/logs/" logger /bin/bash
-
-text1
-text2
-text3
-<C-D>
+$ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+$ cmake --build _build --target package
+Scanning dependencies of target print
+[ 25%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
+[ 50%] Linking CXX static library libprint.a
+[ 50%] Built target print
+Scanning dependencies of target demo
+[ 75%] Building CXX object CMakeFiles/demo.dir/demo/main.cpp.o
+[100%] Linking CXX executable demo
+[100%] Built target demo
+Run CPack packaging tool...
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print []
+CPack: Create package
+CPack: - package: /Users/evgengrmit/Evgengrmit/workspace/projects/lab09/_build/print-0.1.0.0-Darwin.tar.gz generated.
 ```
-Вывод подробной информации о контейнере
+Инициализация проекта на **Travis CI**
 ```sh
-$ docker inspect logger
-```
-Проверяем, что файлы, полученные во время работы в контейнере были сохранены
-```sh
-$ cat logs/log.txt
-text1
-text2
-text3
-```
-Замена lab07 на lab08
-```sh
-$ gsed -i 's/lab07/lab08/g' README.md
-```
-Изменение `.travis.yml` для сборки в контейнере.
-```sh
-$ vim .travis.yml
-/lang<CR>o
-services:
-- docker<ESC>
-jVGdo
-script:
-- docker build -t logger .<ESC>
-:wq
-```
-Добавление **Docker** в репозиторий.
-```sh
-$ git add Dockerfile
-$ git add .travis.yml
-$ git commit -m"adding Dockerfile"
-$ git push origin master
-```
-Активация непрерывной интеграции с **Travis CI**.
-```sh
-# Флаг --com  для работы с travis-ci.com
-$ travis login --auto --com
+$ travis login --auto --pro
 Successfully logged in as Evgengrmit!
-$ travis enable --com
-Evgengrmit/lab08: enabled :)
+$ travis enable --pro
+Evgengrmit/lab09: enabled :)
+```
+Создание тега для коммита
+```sh
+# Создание тега с сообщением с информацией
+$ git tag -s v0.12.0.0
+$ git tag -v v0.1.0.0
+object e5d026df3e4f32f4f4848c24bba2310db5073a49
+type commit
+tag v0.1.0.0
+tagger Evgengrmit <evgengrmit@gmail.com> 1588968443 +0300
+
+Create first release on Github
+gpg: Подпись сделана пятница,  8 мая 2020 г. 23:08:00 MSK
+gpg:                ключом RSA с идентификатором 02A40AF6288ECC99D486C4AFD7C1F3269EC77E39
+gpg: Действительная подпись пользователя "Evgenij Grigorev (Creating the first release on Github) <evgengrmit@icloud.com>" [абсолютное]
+$ git show v0.1.0.0
+tag v0.1.0.0
+Tagger: Evgengrmit <evgengrmit@gmail.com>
+Date:   Fri May 8 23:07:23 2020 +0300
+
+Create first release on Github
+-----BEGIN PGP SIGNATURE-----
+...
+-----END PGP SIGNATURE-----
+
+commit e5d026df3e4f32f4f4848c24bba2310db5073a49 (HEAD -> master, tag: v0.1.0.0)
+Author: Evgengrmit <evgengrmit@gmail.com>
+$ git push origin master --tags
+Enumerating objects: 322, done.
+Counting objects: 100% (322/322), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (136/136), done.
+Writing objects: 100% (322/322), 7.10 MiB | 1.27 MiB/s, done.
+Total 322 (delta 172), reused 321 (delta 172)
+remote: Resolving deltas: 100% (172/172), done.
+To https://github.com/Evgengrmit/lab09
+ * [new branch]      master -> master
+ * [new tag]         v0.1.0.0 -> v0.1.0.0
+```
+Создание релиза
+```sh
+# Проверка версии приложения
+$ github-release --version
+github-release v0.8.1
+# Вывод информации об тегах и релизах пользователя Evgengrmit в репозитории lab09
+$ github-release info -u ${GITHUB_USERNAME} -r lab09
+tags:
+- v0.1.0.0 (commit: https://api.github.com/repos/Evgengrmit/lab09/commits/e5d026df3e4f32f4f4848c24bba2310db5073a49)
+releases:
+# Создание релиза
+$ github-release release \
+    --user ${GITHUB_USERNAME} \
+    --repo lab09 \
+    --tag v0.1.0.0 \
+    --name "libprint" \
+    --description "my first release"
+```
+Добавление артефакта с указанием ОС и архитектуры, на которых происходила компиляция библиотеки
+```sh
+$ export PACKAGE_OS=`uname -s` PACKAGE_ARCH=`uname -m`
+$ export PACKAGE_FILENAME=print-${PACKAGE_OS}-${PACKAGE_ARCH}.tar.gz
+$ github-release upload \
+    --user ${GITHUB_USERNAME} \
+    --repo lab09 \
+    --tag v0.1.0.0 \
+    --name "${PACKAGE_FILENAME}" \
+    --file _build/*.tar.gz
+```
+
+```sh
+$ github-release info -u ${GITHUB_USERNAME} -r lab09tags:
+- v0.1.0.0 (commit: https://api.github.com/repos/Evgengrmit/lab09/commits/e5d026df3e4f32f4f4848c24bba2310db5073a49)
+releases:
+- v0.1.0.0, name: 'libprint', description: 'my first release', id: 26329050, tagged: 08/05/2020 at 20:07, published: 08/05/2020 at 20:45, draft: ✗, prerelease: ✗
+  - artifact: print-Darwin-x86_64.tar.gz, downloads: 0, state: uploaded, type: application/octet-stream, size: 20 kB, id: 20559779
+# Скачивание артефакта из раздела релизов для проверки
+$ wget https://github.com/${GITHUB_USERNAME}/lab09/releases/download/v0.1.0.0/${PACKAGE_FILENAME}
+--2020-05-08 23:51:56--  https://github.com/Evgengrmit/lab09/releases/download/v0.1.0.0/print-Darwin-x86_64.tar.gz
+...
+Сохранение в: «print-Darwin-x86_64.tar.gz»
+print-Darwin-x86_64 100%[===================>]  19,44K   122KB/s    за 0,2s    
+2020-05-08 23:51:57 (122 KB/s) - «print-Darwin-x86_64.tar.gz» сохранён [19909/19909]
+# Просмотр содержимого архива
+$ tar -ztf ${PACKAGE_FILENAME}
+print-0.1.0.0-Darwin/cmake/
+print-0.1.0.0-Darwin/cmake/print-config-noconfig.cmake
+print-0.1.0.0-Darwin/cmake/print-config.cmake
+print-0.1.0.0-Darwin/bin/
+print-0.1.0.0-Darwin/bin/demo
+print-0.1.0.0-Darwin/include/
+print-0.1.0.0-Darwin/include/print.hpp
+print-0.1.0.0-Darwin/lib/
+print-0.1.0.0-Darwin/lib/libprint.a
 ```
 
 ## Report
-
+Создание отчета по ЛР № 9
 ```sh
-Создание отчета по ЛР № 8
 $ popd
-$ export LAB_NUMBER=08
+$ export LAB_NUMBER=09
 $ git clone https://github.com/tp-labs/lab${LAB_NUMBER} tasks/lab${LAB_NUMBER}
 $ mkdir reports/lab${LAB_NUMBER}
 $ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md
 $ cd reports/lab${LAB_NUMBER}
 $ edit REPORT.md
-$ gist REPORT.md
+$ gistup -m "lab${LAB_NUMBER}"
 ```
 
 ## Links
 
-- [Book](https://www.dockerbook.com)
-- [Instructions](https://docs.docker.com/engine/reference/builder/)
+- [Create Release](https://help.github.com/articles/creating-releases/)
+- [Get GitHub Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
+- [Signing Commits](https://help.github.com/articles/signing-commits-with-gpg/)
+- [Go Setup](http://www.golangbootcamp.com/book/get_setup)
+- [github-release](https://github.com/aktau/github-release)
 
 ```
-Copyright (c) 2015-2019 The ISC Authors
+Copyright (c) 2015-2020 The ISC Authors
 ```
